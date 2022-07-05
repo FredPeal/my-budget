@@ -12,6 +12,7 @@
         "laravel/sanctum": "^2.14.1",
         "laravel/tinker": "^2.7",
         "spiral/roadrunner": "^2.10",
+        "spiral/roadrunner-laravel": "^5.9",
         "swooletw/laravel-swoole": "^2.12"
     },
     "require-dev": {

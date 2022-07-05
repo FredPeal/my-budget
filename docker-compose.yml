@@ -1,26 +1,6 @@
 # For more information: https://laravel.com/docs/sail
 version: '3'
-services:
-    php:
-        image: anterisdev/laravel-swoole
-        extra_hosts:
-            - 'host.docker.internal:host-gateway'
-        ports:
-            - '8000:8000'
-        volumes:
-            - '.:/srv/laravel'
-        environment:
-            SWOOLE_MAX_REQUESTS: 5
-            SWOOLE_TASK_WORKERS: 'auto'
-            SWOOLE_WATCH: 'yes'
-            SWOOLE_WORKERS: 'auto'
-        networks:
-            - sail
-        depends_on:
-            - mysql
-            - redis
-            - meilisearch
-            - selenium
+services:  
     mysql:
         image: 'mysql/mysql-server:8.0'
         ports:
@@ -77,6 +57,18 @@ services:
             - '/dev/shm:/dev/shm'
         networks:
             - sail
+    phpmyadmin:
+        image: 'phpmyadmin:latest'
+        ports:
+          - 8081:80
+        environment:
+          MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
+        links:
+          - "mysql:db"
+        depends_on:
+          - mysql
+        networks:
+          - sail
 networks:
     sail:
         driver: bridge
