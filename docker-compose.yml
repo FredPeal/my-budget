@@ -1,6 +1,36 @@
 # For more information: https://laravel.com/docs/sail
 version: '3'
 services:  
+    php:
+        image: fredpeal/laravel-php:8.1.0
+        build:
+            context: ./docker/php/
+            dockerfile: Dockerfile
+        volumes:
+            - ./:/var/www
+        networks:
+            - sail
+    queue:
+        image: fredpeal/laravel-php:8.1.0
+        command: php artisan queue:listen
+        build:
+            context: ./docker/php/
+            dockerfile: Dockerfile
+        volumes:
+            - ./:/var/www
+        networks:
+            - sail
+    nginx:
+        image: nginx:latest
+        ports:
+            - "80:80"
+        links:
+            - php
+        volumes:
+            - .:/var/www/
+            - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+        networks:
+            - sail
     mysql:
         image: 'mysql/mysql-server:8.0'
         ports:
